@@ -22,7 +22,7 @@ const app = {
   csvData: [],
   cellData: [],
   CSVToJSON(csv) {
-    const lines = csv.split("\r\n");
+    const lines = csv.split("\n");
     const keys = lines[0].split(",");
     return lines.slice(1).map((line) => {
       return [line.split(",")[0], line.split(",").slice(1).join()].reduce(
