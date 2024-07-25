@@ -22,9 +22,9 @@ const app = {
   csvData: [],
   cellData: [],
   CSVToJSON(csv) {
-    const lines = csv.split("\n");
+    const lines = csv.split(/((\n|\r\n))/g);
     const keys = lines[0].split(",");
-    return lines.slice(1).map((line) => {
+    const dddd = lines.slice(1).map((line) => {
       return [line.split(",")[0], line.split(",").slice(1).join()].reduce(
         (acc, cur, i) => {
           const toAdd = {};
@@ -34,9 +34,10 @@ const app = {
         {}
       );
     });
+    return dddd.filter(it => it.markers != "")
   },
   CSVToJSON2(csv) {
-    const lines = csv.split("\n");
+    const lines = csv.split(/((\n|\r\n))/g);
     const keys = lines[0].split(",");
     const _ = [];
     const ___ = lines.slice(1).map((line) => line.split(","));
@@ -83,7 +84,7 @@ const app = {
       this.openSuggar(keys);
 
       if (document.querySelector(".js-one").value == "") {
-        document.querySelector(".js-tree").innerHTML = "";
+        // document.querySelector(".js-tree").innerHTML = "";
         document.querySelector(".js-markers").innerHTML = "";
       }
     };
@@ -154,12 +155,13 @@ const app = {
     document.querySelector(".js-markers").innerHTML = "";
     const data = document.querySelector(".js-one").value;
     const markers = this.csvData.filter((it) => it.cell.trim() == data.trim());
-    // console.log(markers);
+    // console.log(JSON.stringify(markers));
     if (markers && markers[0].markers) {
       let _ = markers[0].markers.match(/\'(.*?)\'/g);
       _ = _.slice(0, +document.querySelector(".js-many").value ?? 0);
       _ = _.map((it) => it.replace(/\'/g, ""));
       const keyCons = _.map((it) => `<div class="marker">${it}</div>`);
+      // console.log(keyCons);
       document.querySelector(".js-markers").innerHTML = keyCons.join("");
     }
 
